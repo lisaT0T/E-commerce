@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SignUp Page</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <h2>Register an Account</h2>
+    <form>
+        <label>User Name: </label>
+        <input type="text" id="userName" required>
+        <br><br>
+
+        <label>Email: </label>
+        <input type="text" id="email" required>
+        <br><br>
+
+        <label>Password: </label>
+        <input type="text" id="password" required>
+        <br><br>
+
+        <label>Re-type Password: </label>
+        <input type="text" id="retype_pwd" required>
+        <br><br>
+
+        <input type="button" id="login" value="Login" required>
+        <br><br>
+
+        <div class="alertbox"></div>
+            
+    </form>
+    <h3 id="message"></h3>
+
+    <script>
+        $(document).ready(function() {
+            const host = "http://localhost:3000";
+            $("#login").on('click', function() {
+                var $h = $("#message");
+                $h.text("");
+
+                const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+                var name = $("#userName").val();
+                var email = $("#email").val();
+                var password = $("#password").val();
+                var retypePassword = $("#retype_pwd").val();
+                if (!name) {
+                    alert("User Name is required.");
+                } else if (!email) {
+                    alert("Email is required.");
+                } else if (!password) {
+                    alert("Password is required.");
+                } else if (password !== retypePassword) {
+                    alert("Password do not match.");
+                } else if (!email.match(mailformat)) {
+                    alert("Invalid email address.");
+                }
+
+                $.ajax({
+                    url: `${host}/register`,
+                    type: "POST",
+                    data: JSON.stringify({
+                        email: email,
+                        userName: name,
+                        password: password,
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function(res) {
+                        $h.text(res.message);
+                        $h.css("color", "red");
+                        window.location.replace(`${host}${res.redirect}`);
+                    },
+                    error: function(err) {
+                        $h.text("Error when sign up");
+                        $h.css("color", "red");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

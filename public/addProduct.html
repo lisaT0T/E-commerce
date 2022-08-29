@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    referrerpolicy="no-referrer"></script>
+    <title>Document</title>
+</head>
+<body>
+    <h2>Added Product</h2>
+    <form>
+        <label>Title: </label>
+        <input type="text" id="title" required>
+        <br><br>
+
+        <label>Description: </label>
+        <input type="text" id="desc" required>
+        <br><br>
+
+        <label>Brand: </label>
+        <input type="text" id="brand" required>
+        <br><br>
+
+        <label>Price: </label>
+        <input type="text" id="price" required>
+        <br><br>
+
+        <label>Image: </label>
+        <input type="text" id="img" required>
+        <br><br>
+
+        <input type="button" id="submit" value="Submit">
+        <br><br>
+
+        <div class="alertbox"></div>
+    </form>
+</body>
+
+<script>
+    $(document).ready(function() {
+        const host = "http://localhost:3000";
+        $("#submit").on('click', function() {
+            var title = $("#title").val();
+            var desc = $("#desc").val();
+            var price = $("#price").val();
+            var brand = $("#brand").val();
+            var img = $("#img").val();
+            console.log(img);
+
+            $.ajax({
+                url: `${host}/register`,
+                type: "POST",
+                data: JSON.stringify({
+                    title: title,
+                    description: desc,
+                    brand: brand,
+                    price: price,
+                    img: img,
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: function(res) {
+                    var $h = $(`<h3>${res.message}</h3>`);
+                    $h.css("color", "red");
+                    $('body').append($h);
+                },
+                error: function(err) {
+                    var $h = $(`<h3>${err.message}</h3>`);
+                    $h.css("color", "red");
+                    $('body').append($h);
+                }
+            });
+        });
+    });
+</script>
+</html>

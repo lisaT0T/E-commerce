@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <h2>Login To the user Page</h2>
+    <form>
+        <label>User Name: </label>
+        <input type="text" id="userName">
+        <br><br>
+
+        <label>Password: </label>
+        <input type="text" id="password">
+        <br><br>
+
+        <input type="button" id="login" value="Login">
+        <br><br>
+    </form>
+    <h3 id="message"></h3>
+
+    <script>
+        $(document).ready(function() {
+            const host = "http://localhost:3000";
+            $("#login").on('click', function() {
+                var $h = $("#message");
+                $h.text("");
+                $.ajax({
+                    url: `${host}/login`,
+                    type: "POST",
+                    data: JSON.stringify({
+                        userName: $("#userName").val(),
+                        password: $("#password").val(),
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function(res) {
+                        $h.text(res.message);
+                        $h.css("color", "red");
+                        window.location.replace(`${host}${res.redirect}`);
+                    },
+                    error: function(err) {
+                        $h.text("Error when Logged In");
+                        $h.css("color", "red");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
