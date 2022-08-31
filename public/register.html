@@ -17,14 +17,14 @@
         <br><br>
 
         <label>Password: </label>
-        <input type="text" id="password" required>
+        <input type="password" id="password" required>
         <br><br>
 
         <label>Re-type Password: </label>
-        <input type="text" id="retype_pwd" required>
+        <input type="password" id="retype_pwd" required>
         <br><br>
 
-        <input type="button" id="login" value="Login" required>
+        <input type="button" id="signup" value="Login" required>
         <br><br>
 
         <div class="alertbox"></div>
@@ -35,7 +35,7 @@
     <script>
         $(document).ready(function() {
             const host = "http://localhost:3000";
-            $("#login").on('click', function() {
+            $("#signup").on('click', function() {
                 var $h = $("#message");
                 $h.text("");
 
@@ -55,8 +55,9 @@
                     alert("Password do not match.");
                 } else if (!email.match(mailformat)) {
                     alert("Invalid email address.");
-                }
+                } else {
 
+                
                 $.ajax({
                     url: `${host}/register`,
                     type: "POST",
@@ -64,6 +65,7 @@
                         email: email,
                         userName: name,
                         password: password,
+                        retype: retypePassword,
                     }),
                     contentType: "application/json; charset=utf-8",
                     success: function(res) {
@@ -76,6 +78,9 @@
                         $h.css("color", "red");
                     }
                 });
+
+
+                }
             });
         });
     </script>

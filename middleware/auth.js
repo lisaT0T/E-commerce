@@ -1,18 +1,19 @@
 const jwt = require("jsonwebtoken");
 
 const auth_jwt = (req, res, next) => {
-    const token = req.header("JWT");
+    const token = req.body.token;
     if (token) {
-        jwt.verify(token, process.env.JWT_KEY, (err, user) => {
-            if (err) res.status(403).json("Token not valid.");
-            req.user = user;
-            console.log(user);
-            next();
-        });
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_KEY);
+            req.user = decoded;
+        } catch (err) {
+            return res.status(401).json("Invalid Token.");
+        }
+        
     } else{
-        return res.status(401).json("No authentication.");
+        return res.status(401).json("Token required for authentication.");
     }
-    
+    return next();
 }
 
 const auth_jwt_admin = (req, res, next) => {

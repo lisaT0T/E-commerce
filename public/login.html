@@ -13,7 +13,7 @@
         <br><br>
 
         <label>Password: </label>
-        <input type="text" id="password">
+        <input type="password" id="password">
         <br><br>
 
         <input type="button" id="login" value="Login">
@@ -42,6 +42,7 @@
                     },
                     error: function(err) {
                         $h.text("Error when Logged In");
+                        console.log(err);
                         $h.css("color", "red");
                     }
                 });

@@ -58,5 +58,9 @@ app.use(productRouter);
 
 app.use(express.static(staticPath));
 
+app.use("*", (req, res) => {
+  res.send("404 Not Found.");
+})
+
 
 module.exports = app;
